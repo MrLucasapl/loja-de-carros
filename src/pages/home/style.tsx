@@ -1,40 +1,35 @@
 import styled from "styled-components";
 
 export const HomeStyled = styled.div`
-  .box-input {
-    margin: 20px 0px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  overflow: auto;
+  height: 100vh;
+  display: flex;
 
-    input, select {
-      width: 40%;
-      height: 30px;
-      font-weight: 500;
-      font-size: 1rem;
-      padding: 0px 9px;
-      border-radius: 7px;
-    }
-
-    textarea:focus,
-    input:focus {
-      outline: none;
-    }
+  .box-forms {
+    height: 100vh;
   }
 
   .box-cards {
     gap: 0.8%;
+    width: 100%;
+    height: 90%;
     display: grid;
-    margin: 0 auto;
-    max-width: 1448px;
+    margin: 0px auto;
+    overflow: auto;
+    max-width: 1500px;
     grid-template-columns: repeat(auto-fit, minmax(231px, 1fr));
   }
 
-  form{
-    width: 90%;
-    height: 100%;
+  select::-webkit-scrollbar,
+  .box-cards::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  .erro {
+    height: 100vh;
     display: flex;
+    font-size: 2rem;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
   }
 `;

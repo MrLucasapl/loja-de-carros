@@ -9,3 +9,28 @@ export interface Icar {
   preco: number;
   usado: boolean;
 }
+
+export type TFormData = {
+  search: string;
+  filter: string;
+  yearMin: string;
+  yearMax: string;
+  priceMin: string;
+  priceMax: string;
+  kmMin: string;
+  kmMax: string;
+  fuel: string;
+  newCar: boolean;
+  usedCar: boolean;
+};
+
+export interface IhandleChange {
+  name: string;
+  value: string | boolean;
+}
+
+export interface IHomeProps {
+  data: Icar[]; 
+  copyData: Icar[];
+  setCopyData: React.Dispatch<React.SetStateAction<Icar[]>>
+}

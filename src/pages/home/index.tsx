@@ -1,77 +1,87 @@
 import React from "react";
-import CardCar from "../../components/cardCar/inde";
+import CardCar from "../../components/cardCar";
+import Fildform from "../../components/form";
+import Header from "../../components/header";
+import { Loading } from "../../components/loading";
+import { useLoading } from "../../context";
 import { Icar } from "../../global";
 import { getAllCar } from "../../services/api";
-import { filterCar } from "../../util/filterCar";
+import { getOptions } from "../../util/getOptionElementsWithCount";
 import { HomeStyled } from "./style";
-
-type TInputField = {
-  name: string;
-  value: string;
-};
-
-const inputField: TInputField[] = [
-  {
-    name: "search",
-    value: "",
-  },
-  {
-    name: "filter",
-    value: "",
-  },
-];
 
 const Home = () => {
   const [data, setData] = React.useState<Icar[]>([]);
   const [copyData, setCopyData] = React.useState<Icar[]>([]);
-  const [formSave, setformSave] = React.useState(
-    inputField.reduce(
-      (acc, field) => {
-        return { ...acc, [field.name]: "" };
-      },
-      { search: "", filter: "" }
-    )
-  );
+  const [brands, setBrands] = React.useState<JSX.Element[]>([]);
+  const [years, setYears] = React.useState<JSX.Element[]>([]);
+  const [fuel, setFuel] = React.useState<JSX.Element[]>([]);
+  const [category, setCategory] = React.useState<string[]>([
+    "Ano",
+    "Preço",
+    "Marca",
+    "Modelo",
+    "Quilometragem",
+  ]);
+  
+  const { isLoading, setLoading } = useLoading();
 
   React.useEffect(() => {
+    setLoading(true);
     getAllCar().then((response: Icar[]) => {
       setData(response);
       setCopyData(response);
+      setLoading(false);
     });
-  }, []);
+  }, [setLoading]);
 
   React.useEffect(() => {
-    filterCar(formSave.search, formSave.filter, data, setCopyData);
-  }, [formSave]);
+    setFuel(getOptions(data, "combustivel"));
+    setBrands(getOptions(data, "marca"));
+  }, [data]);
 
-  const handleChange = ({ target }: any) => {
-    setformSave({ ...formSave, [target.name]: target.value });
-  };
+  React.useEffect(() => {
+    const startYear = 1900;
+    const currentYear = new Date().getFullYear();
 
-  if (data.length === 0) {
-    return <div>Loading...</div>;
-  }
+    const years = [];
+    for (let i = startYear; i <= currentYear; i++) {
+      years.push(i);
+    }
+
+    const yearsOptions: JSX.Element[] = [];
+    for (const year in years) {
+      yearsOptions.push(
+        <option key={years[year]} value={years[year]}>
+          {years[year]}
+        </option>
+      );
+    }
+    setYears(yearsOptions);
+  }, [data]);
 
   return (
     <HomeStyled>
-      <div className="box-input">
-        <form action="">
-          <input
-            type="text"
-            name="search"
-            onInput={handleChange}
-            autoComplete="off"
+      <div className="box-forms">
+        <Fildform
+          copyData={copyData}
+          brands={brands}
+          years={years}
+          fuel={fuel}
+          data={data}
+          setCopyData={setCopyData}
           />
-          <select name="filter" id="filter" onInput={handleChange}>
-            <option value="">Selecione</option>
-            <option value="marca">Marca</option>
-            <option value="modelo">Modelo</option>
-          </select>
-        </form>
       </div>
-      <div className="box-cards">
-        <CardCar values={copyData} />
-      </div>
+      {isLoading ? (
+        <Loading isLoading={isLoading} />
+      ) : (
+        <div className="box-cards">
+          {copyData.length > 0 ? (
+            <CardCar values={copyData} />
+          ) : (
+            <strong className="erro">Nenhum Carro Encontrado!</strong>
+          )}
+        </div>
+      )}
     </HomeStyled>
   );
 };

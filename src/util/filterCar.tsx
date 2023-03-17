@@ -1,52 +1,107 @@
-import { Icar } from "../global";
+import { Icar, TFormData } from "../global";
 import { accentRemover } from "../util/accentRemover";
 
+interface IfilterCar extends TFormData {}
+
 export const filterCar = (
-  search: string,
-  filter: string,
+  filters: IfilterCar,
   data: Icar[] | [],
   setCopyData: React.Dispatch<React.SetStateAction<[] | Icar[]>>
 ) => {
-  if (search === "" && filter === "") {
+  const normalizedSearch = accentRemover(filters.search.toLowerCase());
+  const normalizedFilter = accentRemover(filters.filter.toLowerCase());
+  const normalizedYearMin = accentRemover(filters.yearMin.toLowerCase());
+  const normalizedYearMax = accentRemover(filters.yearMax.toLowerCase());
+  const normalizedPriceMin = accentRemover(filters.priceMin.toLowerCase());
+  const normalizedPriceMax = accentRemover(filters.priceMax.toLowerCase());
+  const normalizedkmMin = accentRemover(filters.kmMin.toLowerCase());
+  const normalizedkmMax = accentRemover(filters.kmMax.toLowerCase());
+  const normalizedFuel = accentRemover(filters.fuel.toLowerCase());
+
+  const hasFilters =
+    filters.search !== "" ||
+    filters.filter !== "" ||
+    filters.yearMin !== "" ||
+    filters.yearMax !== "" ||
+    filters.priceMin !== "" ||
+    filters.priceMax !== "" ||
+    filters.kmMin !== "" ||
+    filters.kmMax !== "" ||
+    filters.fuel !== "" ||
+    filters.usedCar !== false ||
+    filters.newCar !== false;
+
+  if (!hasFilters) {
     setCopyData(data);
-  } else if (search !== "" && filter !== "") {
-    switch (filter) {
-      case "marca":
-        setCopyData(
-          data.filter((car: Icar) => {
-            let marca = car.marca.toLowerCase();
-            marca = accentRemover(marca);
-            if (marca.includes(search)) {
-              return marca;
-            }
-          })
-        );
-        break;
-
-      case "modelo":
-        setCopyData(
-          data.filter((car: Icar) => {
-            let modelo = car.modelo.toLowerCase();
-            modelo = accentRemover(modelo);
-            if (modelo.includes(search)) {
-              return modelo;
-            }
-          })
-        );
-        break;
-
-      default:
-        break;
-    }
-  } else {
-    setCopyData(
-      data.filter((car: Icar) => {
-        let modelo = car.modelo.toLowerCase();
-        modelo = accentRemover(modelo);
-        if (modelo.includes(search)) {
-          return modelo;
-        }
-      })
-    );
+    return;
   }
+
+  let filteredData = data.filter((car: Icar) => {
+    const normalizedItem = accentRemover(car.modelo.toLowerCase());
+    return normalizedItem.includes(normalizedSearch);
+  });
+
+  if (filters.filter !== "") {
+    filteredData = filteredData.filter((car) => {
+      const normalizedItem = accentRemover(car.marca.toLowerCase());
+      return normalizedItem.includes(normalizedFilter);
+    });
+  }
+
+  if (filters.yearMin !== "") {
+    filteredData = filteredData.filter((car) => {
+      return car.ano >= parseInt(normalizedYearMin);
+    });
+  }
+
+  if (filters.yearMax !== "") {
+    filteredData = filteredData.filter((car) => {
+      return car.ano <= parseInt(normalizedYearMax);
+    });
+  }
+
+  if (filters.priceMin !== "") {
+    filteredData = filteredData.filter((car) => {
+      return car.preco >= parseInt(normalizedPriceMin);
+    });
+  }
+
+  if (filters.priceMax !== "") {
+    filteredData = filteredData.filter((car) => {
+      return car.preco <= parseInt(normalizedPriceMax);
+    });
+  }
+
+  if (filters.kmMin !== "") {
+    filteredData = filteredData.filter((car) => {
+      return car.km >= parseInt(normalizedkmMin);
+    });
+  }
+
+  if (filters.kmMax !== "") {
+    filteredData = filteredData.filter((car) => {
+      return car.km <= parseInt(normalizedkmMax);
+    });
+  }
+
+  if (filters.fuel !== "") {
+    filteredData = filteredData.filter((car) => {
+      const normalizedItem = accentRemover(car.combustivel.toLowerCase());
+      return normalizedItem.includes(normalizedFuel);
+    });
+  }
+
+  if (filters.newCar) {
+    filteredData = filteredData.filter((car) => {
+      return car.usado === false;
+    });
+  }
+
+  if (filters.usedCar) {
+    filteredData = filteredData.filter((car) => {
+      return car.usado !== false;
+    });
+  }
+
+  setCopyData(filteredData);
 };

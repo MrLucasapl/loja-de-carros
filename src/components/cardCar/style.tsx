@@ -13,7 +13,7 @@ export const CardCarStyled = styled.section`
   }
 
   .container {
-    width: 221px;
+    width: 215px;
     display: flex;
     padding: 10px;
     height: 410px;
@@ -42,6 +42,7 @@ export const CardCarStyled = styled.section`
     div {
       display: flex;
       color: #5c7286;
+      text-align: end;
       font-size: 0.75rem;
       align-items: flex-end;
       flex-direction: column;
