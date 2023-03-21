@@ -1,17 +1,17 @@
 import React from "react";
 import CardCar from "../../components/cardCar";
 import Fildform from "../../components/form";
-import Header from "../../components/header";
 import { Loading } from "../../components/loading";
 import { useLoading } from "../../context";
-import { Icar } from "../../global";
-import { getAllCar } from "../../services/api";
+import { Icar, OutletContextType } from "../../global";
 import { getOptions } from "../../util/getOptionElementsWithCount";
 import { HomeStyled } from "./style";
+import { useOutletContext } from "react-router-dom";
 
 const Home = () => {
-  const [data, setData] = React.useState<Icar[]>([]);
-  const [copyData, setCopyData] = React.useState<Icar[]>([]);
+  const [data, copyData, setCopyData]: OutletContextType = useOutletContext();
+  const { isLoading, setLoading } = useLoading();
+
   const [brands, setBrands] = React.useState<JSX.Element[]>([]);
   const [years, setYears] = React.useState<JSX.Element[]>([]);
   const [fuel, setFuel] = React.useState<JSX.Element[]>([]);
@@ -22,17 +22,6 @@ const Home = () => {
     "Modelo",
     "Quilometragem",
   ]);
-  
-  const { isLoading, setLoading } = useLoading();
-
-  React.useEffect(() => {
-    setLoading(true);
-    getAllCar().then((response: Icar[]) => {
-      setData(response);
-      setCopyData(response);
-      setLoading(false);
-    });
-  }, [setLoading]);
 
   React.useEffect(() => {
     setFuel(getOptions(data, "combustivel"));
@@ -59,18 +48,34 @@ const Home = () => {
     setYears(yearsOptions);
   }, [data]);
 
+  function renderContent(isLoading, copyData) {
+    if (isLoading) {
+      return <Loading isLoading={isLoading} />;
+    } else if (copyData.length > 0) {
+      return (
+        <div className="box-cards">
+          <CardCar values={copyData} />
+        </div>
+      );
+    } else {
+      return <strong className="erro">Nenhum Carro Encontrado!</strong>;
+    }
+  }
+
   return (
     <HomeStyled>
-      <div className="box-forms">
-        <Fildform
-          copyData={copyData}
-          brands={brands}
-          years={years}
-          fuel={fuel}
-          data={data}
-          setCopyData={setCopyData}
+      {
+        <div className="box-forms">
+          <Fildform
+            copyData={copyData}
+            brands={brands}
+            years={years}
+            fuel={fuel}
+            data={data}
+            setCopyData={setCopyData}
           />
-      </div>
+        </div>
+      }
       {isLoading ? (
         <Loading isLoading={isLoading} />
       ) : (

@@ -29,8 +29,19 @@ export interface IhandleChange {
   value: string | boolean;
 }
 
-export interface IHomeProps {
-  data: Icar[]; 
+export interface IheaderProps {
   copyData: Icar[];
-  setCopyData: React.Dispatch<React.SetStateAction<Icar[]>>
+  setCopyData: React.Dispatch<React.SetStateAction<Icar[]>>;
 }
+
+export interface OutletContextType extends Iterable<any> {
+  data: Icar[];
+  copyData: Icar[];
+  setCopyData: React.Dispatch<React.SetStateAction<Icar[]>>;
+}
+// @ts-ignore
+OutletContextType.prototype[Symbol.iterator] = function* () {
+  yield this.data;
+  yield this.copyData;
+  yield this.setCopyData;
+};
