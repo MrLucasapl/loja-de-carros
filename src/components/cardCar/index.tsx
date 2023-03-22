@@ -1,18 +1,34 @@
 import React from "react";
-import { Icar } from "../../global";
+import { CardCarProps } from "../../global";
 import { formatKm } from "../../util/formatKm";
 import { CardCarStyled } from "./style";
 
-interface CardCarProps {
-  values: Icar[];
-}
+const CardCar: React.FC<CardCarProps> = ({
+  values,
+  setContSelected,
+  setSelectedCars,
+}) => {
+  let selectedCount = 0;
 
-const CardCar: React.FC<CardCarProps> = ({ values }) => {
+  const toggleSelected = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const target = event.target as HTMLElement;
+    const card = target.closest(".container");
+    if (card) {
+      card.classList.toggle("selected");
+      selectedCount += card.classList.contains("selected") ? 1 : -1;
+      const car = values.find((car) => car.id === Number(card.id));
+      if (car) {
+        setSelectedCars((selectedCars) => [...selectedCars, car]);
+      }
+    }
+    setContSelected(selectedCount);
+  };
+
   const carItems = React.useMemo(
     () =>
       values.map((car) => (
-        <CardCarStyled key={car.id}>
-          <div className="container">
+        <CardCarStyled key={car.id} onClick={toggleSelected}>
+          <div id={String(car.id)} className="container">
             <img
               className="img"
               src={car.imagem}

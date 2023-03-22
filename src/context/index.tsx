@@ -1,11 +1,7 @@
 import React from "react";
 import { Routes } from "react-router-dom";
 import { Loading } from "../components/loading";
-
-interface ILoadingContext {
-  isLoading: boolean;
-  setLoading: (loading: boolean) => void;
-}
+import { ILoadingContext } from "../global";
 
 export const LoadingContext = React.createContext<ILoadingContext>({
   isLoading: false,

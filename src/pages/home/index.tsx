@@ -1,34 +1,34 @@
 import React from "react";
-import CardCar from "../../components/cardCar";
 import Fildform from "../../components/form";
-import { Loading } from "../../components/loading";
 import { useLoading } from "../../context";
 import { Icar, OutletContextType } from "../../global";
 import { getOptions } from "../../util/getOptionElementsWithCount";
 import { HomeStyled } from "./style";
-import { useOutletContext } from "react-router-dom";
+import RenderContext from "../../components/renderContent";
 
-const Home = () => {
-  const [data, copyData, setCopyData]: OutletContextType = useOutletContext();
+const Home = ({ copyData, data, setCopyData }: OutletContextType) => {
   const { isLoading, setLoading } = useLoading();
 
   const [brands, setBrands] = React.useState<JSX.Element[]>([]);
   const [years, setYears] = React.useState<JSX.Element[]>([]);
   const [fuel, setFuel] = React.useState<JSX.Element[]>([]);
-  const [category, setCategory] = React.useState<string[]>([
-    "Ano",
-    "Preço",
-    "Marca",
-    "Modelo",
-    "Quilometragem",
-  ]);
+  const [contSelected, setContSelected] = React.useState<number>(0);
+  const [selectedCars, setSelectedCars] = React.useState<Icar[]>([]);
+  const [showMenu, setShowMenu] = React.useState(false);
+
+  function handleToggleMenu() {
+    setShowMenu(!showMenu);
+  }
 
   React.useEffect(() => {
+    setLoading(true);
     setFuel(getOptions(data, "combustivel"));
     setBrands(getOptions(data, "marca"));
+    setLoading(false);
   }, [data]);
 
   React.useEffect(() => {
+    setLoading(true);
     const startYear = 1900;
     const currentYear = new Date().getFullYear();
 
@@ -46,47 +46,26 @@ const Home = () => {
       );
     }
     setYears(yearsOptions);
+    setLoading(false);
   }, [data]);
-
-  function renderContent(isLoading, copyData) {
-    if (isLoading) {
-      return <Loading isLoading={isLoading} />;
-    } else if (copyData.length > 0) {
-      return (
-        <div className="box-cards">
-          <CardCar values={copyData} />
-        </div>
-      );
-    } else {
-      return <strong className="erro">Nenhum Carro Encontrado!</strong>;
-    }
-  }
 
   return (
     <HomeStyled>
       {
         <div className="box-forms">
           <Fildform
-            copyData={copyData}
-            brands={brands}
-            years={years}
-            fuel={fuel}
             data={data}
+            fuel={fuel}
+            years={years}
+            brands={brands}
+            copyData={copyData}
             setCopyData={setCopyData}
+            contSelected={contSelected}
+            selectedCars={selectedCars}
           />
         </div>
       }
-      {isLoading ? (
-        <Loading isLoading={isLoading} />
-      ) : (
-        <div className="box-cards">
-          {copyData.length > 0 ? (
-            <CardCar values={copyData} />
-          ) : (
-            <strong className="erro">Nenhum Carro Encontrado!</strong>
-          )}
-        </div>
-      )}
+      <RenderContext setSelectedCars={setSelectedCars} isLoading={isLoading} copyData={copyData} setContSelected={setContSelected} />
     </HomeStyled>
   );
 };

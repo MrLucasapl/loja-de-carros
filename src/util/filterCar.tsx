@@ -17,7 +17,8 @@ export const filterCar = (
   const normalizedkmMin = accentRemover(filters.kmMin.toLowerCase());
   const normalizedkmMax = accentRemover(filters.kmMax.toLowerCase());
   const normalizedFuel = accentRemover(filters.fuel.toLowerCase());
-
+  const normalizedOrderBy = accentRemover(filters.orderBy.toLowerCase());
+  
   const hasFilters =
     filters.search !== "" ||
     filters.filter !== "" ||
@@ -28,6 +29,8 @@ export const filterCar = (
     filters.kmMin !== "" ||
     filters.kmMax !== "" ||
     filters.fuel !== "" ||
+    filters.orderBy !== "" ||
+    filters.asc !== false ||
     filters.usedCar !== false ||
     filters.newCar !== false;
 
@@ -101,6 +104,76 @@ export const filterCar = (
     filteredData = filteredData.filter((car) => {
       return car.usado !== false;
     });
+  }
+
+  if (filters.asc) {
+    switch (normalizedOrderBy) {
+      case "ano":
+        setCopyData(filteredData.sort((a, b) => a.ano - b.ano));
+        break;
+      case "preco":
+        setCopyData(filteredData.sort((a, b) => a.preco - b.preco));
+        break;
+      case "marca":
+        setCopyData(
+          filteredData.sort((a, b) => {
+            let x = a.marca.toLowerCase();
+            let z = b.marca.toLowerCase();
+            return x == z ? 0 : x > z ? 1 : -1;
+          })
+        );
+        break;
+      case "modelo":
+        setCopyData(
+          filteredData.sort((a, b) => {
+            let x = a.modelo.toLowerCase();
+            let z = b.modelo.toLowerCase();
+            return x == z ? 0 : x > z ? 1 : -1;
+          })
+        );
+        break;
+      case "quilometragem":
+        setCopyData(filteredData.sort((a, b) => a.km - b.km));
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  if (filters.des) {
+    switch (normalizedOrderBy) {
+      case "ano":
+        setCopyData(filteredData.sort((a, b) => b.ano - a.ano));
+        break;
+      case "preco":
+        setCopyData(filteredData.sort((a, b) => b.preco - a.preco));
+        break;
+      case "marca":
+        setCopyData(
+          filteredData.sort((a, b) => {
+            let x = a.marca.toLowerCase();
+            let z = b.marca.toLowerCase();
+            return x == z ? 0 : x < z ? 1 : -1;
+          })
+        );
+        break;
+      case "modelo":
+        setCopyData(
+          filteredData.sort((a, b) => {
+            let x = a.modelo.toLowerCase();
+            let z = b.modelo.toLowerCase();
+            return x == z ? 0 : x < z ? 1 : -1;
+          })
+        );
+        break;
+      case "quilometragem":
+        setCopyData(filteredData.sort((a, b) => b.km - a.km));
+        break;
+
+      default:
+        break;
+    }
   }
 
   setCopyData(filteredData);

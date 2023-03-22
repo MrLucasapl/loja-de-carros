@@ -5,14 +5,10 @@ export const HomeStyled = styled.div`
   height: 100vh;
   display: flex;
 
-  .box-forms {
-    height: 100vh;
-  }
-
   .box-cards {
     gap: 0.8%;
     width: 100%;
-    height: 90%;
+    height: 100%;
     display: grid;
     margin: 0px auto;
     overflow: auto;
@@ -26,6 +22,7 @@ export const HomeStyled = styled.div`
   }
 
   .erro {
+    width: 100vw;
     height: 100vh;
     display: flex;
     font-size: 2rem;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Icar, IhandleChange, TFormData } from "../../global";
+import { IFildform, IhandleChange, TFormData } from "../../global";
 import { filterCar } from "../../util/filterCar";
 import { FildformStyled } from "./style";
 
@@ -14,19 +14,13 @@ const inputField: TFormData[] = [
     kmMin: "",
     kmMax: "",
     fuel: "",
+    orderBy: "",
+    asc: false,
+    des: false,
     newCar: false,
     usedCar: false,
   },
 ];
-
-interface IFildform {
-  brands: JSX.Element[];
-  years: JSX.Element[];
-  fuel: JSX.Element[];
-  copyData: Icar[];
-  data: Icar[];
-  setCopyData: React.Dispatch<React.SetStateAction<Icar[]>>;
-}
 
 const Fildform = ({
   brands,
@@ -34,10 +28,14 @@ const Fildform = ({
   fuel,
   data,
   copyData,
+  selectedCars,
   setCopyData,
+  contSelected,
 }: IFildform) => {
   const [isActiveNewCar, setIsActiveNewCar] = React.useState<boolean>(false);
   const [isActiveUsedCar, setIsActiveUsedCar] = React.useState<boolean>(false);
+  const [isActiveAsc, setIsActiveAsc] = React.useState<boolean>(false);
+  const [isActiveDes, setIsActiveDes] = React.useState<boolean>(false);
   const [formSave, setformSave] = React.useState(
     inputField.reduce(
       (acc, field) => {
@@ -53,6 +51,9 @@ const Fildform = ({
         kmMin: "",
         kmMax: "",
         fuel: "",
+        orderBy: "",
+        asc: false,
+        des: false,
         newCar: false,
         usedCar: false,
       }
@@ -68,10 +69,71 @@ const Fildform = ({
     setformSave({ ...formSave, [name]: value });
   };
 
+  const calculateAverage = () => {
+    let vari = 0;
+    copyData.map((car) => {
+      vari += car.preco;
+    });
+    vari = vari / copyData.length;
+    alert(
+      `A media dos valores dos carros em tela é: ${vari.toLocaleString(
+        "pt-br",
+        {
+          style: "currency",
+          currency: "BRL",
+        }
+      )}`
+    );
+  };
+
+  const calculateMoreYears = () => {
+    const countByYear: { [key: number]: number } = {};
+
+    copyData.forEach((car) => {
+      if (countByYear[car.ano]) {
+        countByYear[car.ano]++;
+      } else {
+        countByYear[car.ano] = 1;
+      }
+    });
+
+    const mostFrequentYear = Object.keys(countByYear).reduce((acc, val) => {
+      return countByYear[Number(acc)] > countByYear[Number(val)] ? acc : val;
+    });
+
+    alert(`O ano com mais carros é ${mostFrequentYear}`);
+  };
+
+  const calculateAverageYears = () => {
+    const idCounts: { [key: string]: number } = {};
+    selectedCars.forEach((car) => {
+      idCounts[car.id] = (idCounts[car.id] || 0) + 1;
+    });
+
+    const filteredCars = selectedCars.filter((car) => {
+      return idCounts[car.id] % 2 !== 0;
+    });
+
+    const totalYears = filteredCars.reduce((sum, car) =>  sum + car.ano, 0 );
+    const averageYears = totalYears / filteredCars.length;
+
+    alert(`A media dos anos dos carros selecionados é ${averageYears.toFixed(0)}`)
+  };
+
+  const calculateStandardDeviation = () => {
+    const media = copyData.reduce((total, valor) => total + valor.km, 0) / copyData.length;
+    const somaQuadradosDiferencas = copyData.reduce((total, valor) => total + Math.pow(valor.km - media, 2), 0);
+    const desvioPadrao = Math.sqrt(somaQuadradosDiferencas / (copyData.length - 1));
+
+    alert(`O desvio padrão dos quilômetros é: ${desvioPadrao.toFixed(0)}`)
+  };
+
   return (
     <FildformStyled>
       <form onSubmit={handleSubmit}>
-        <div className="search-total">{copyData.length}</div>
+        <div className="search-total">
+          {contSelected == 0 ? copyData.length : contSelected}
+        </div>
         <label htmlFor="search" className="box-input-search">
           <input
             type="text"
@@ -215,6 +277,59 @@ const Fildform = ({
           </label>
         </div>
 
+        <div className="box-orderBy-asc">
+          <label htmlFor="orderBy">
+            Ordenar por:
+            <select
+              name="orderBy"
+              className="orderBy"
+              id="orderBy"
+              onChange={({ target }) =>
+                handleChange({ name: target.name, value: target.value })
+              }
+            >
+              <option value="">Selecione</option>
+              <option value="ano">Ano</option>
+              <option value="preco">Preço</option>
+              <option value="marca">Marca</option>
+              <option value="modelo">Modelo</option>
+              <option value="quilometragem">Quilometragem</option>
+            </select>
+          </label>
+
+          <label htmlFor="asc">
+            Crescente:
+            <input
+              type="checkbox"
+              className="asc"
+              id="asc"
+              checked={isActiveAsc}
+              onChange={({ target }) => {
+                handleChange({ name: "asc", value: target.checked });
+                setIsActiveAsc(!isActiveAsc);
+              }}
+            />
+          </label>
+
+          <label htmlFor="des">
+            Decrecente:
+            <input
+              type="checkbox"
+              className="des"
+              id="des"
+              checked={isActiveDes}
+              onChange={({ target }) => {
+                handleChange({ name: "des", value: target.checked });
+                setIsActiveDes(!isActiveDes);
+              }}
+            />
+          </label>
+        </div>
+
+        <button onClick={calculateAverage}>Calcular Media</button>
+        <button onClick={calculateMoreYears}>Ano Com Mais Carros </button>
+        <button onClick={calculateAverageYears}>Media Dos Anos </button>
+        <button onClick={calculateStandardDeviation}>Desvio Padrão dos km </button>
         <button type="submit">Buscar</button>
       </form>
     </FildformStyled>

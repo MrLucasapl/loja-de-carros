@@ -1,4 +1,5 @@
 export interface Icar {
+  year: any;
   ano: number;
   combustivel: string;
   id: number;
@@ -20,6 +21,9 @@ export type TFormData = {
   kmMin: string;
   kmMax: string;
   fuel: string;
+  orderBy: string;
+  asc: boolean;
+  des: boolean;
   newCar: boolean;
   usedCar: boolean;
 };
@@ -34,14 +38,46 @@ export interface IheaderProps {
   setCopyData: React.Dispatch<React.SetStateAction<Icar[]>>;
 }
 
-export interface OutletContextType extends Iterable<any> {
+export interface OutletContextType {
   data: Icar[];
   copyData: Icar[];
   setCopyData: React.Dispatch<React.SetStateAction<Icar[]>>;
 }
-// @ts-ignore
-OutletContextType.prototype[Symbol.iterator] = function* () {
-  yield this.data;
-  yield this.copyData;
-  yield this.setCopyData;
-};
+
+export interface Irender {
+  isLoading: boolean;
+  copyData: any;
+  setSelectedCars: React.Dispatch<React.SetStateAction<Icar[]>>;
+  setContSelected: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export interface CardCarProps {
+  values: Icar[];
+  setSelectedCars: React.Dispatch<React.SetStateAction<Icar[]>>;
+  setContSelected: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export interface IFildform {
+  brands: JSX.Element[];
+  years: JSX.Element[];
+  fuel: JSX.Element[];
+  selectedCars: Icar[];
+  copyData: Icar[];
+  data: Icar[];
+  contSelected: number;
+  setCopyData: React.Dispatch<React.SetStateAction<Icar[]>>;
+}
+
+export interface ILoadingProps {
+  isLoading: boolean;
+}
+
+export interface ILoadingContext {
+  isLoading: boolean;
+  setLoading: (loading: boolean) => void;
+}
+
+export interface Ibanner {
+  closingTime: Date;
+  copyData: Icar[];
+}

@@ -9,7 +9,7 @@ export const CardCarStyled = styled.section`
   .container:hover {
     width: 229px;
     background-color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.256);
   }
 
   .container {
@@ -24,6 +24,10 @@ export const CardCarStyled = styled.section`
     background-color: #fff;
     transition: all 0.3s ease-in-out;
     box-shadow: 0 0.125rem 0.625rem #0000000a;
+  }
+
+  .selected {
+    box-shadow: 0 0 20px #a6ec70;
   }
 
   .marca,

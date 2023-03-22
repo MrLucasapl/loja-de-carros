@@ -1,9 +1,6 @@
 import React from "react";
+import { ILoadingProps } from "../../global";
 import { ContainerSpinner } from "./style";
-
-interface ILoadingProps {
-  isLoading: boolean;
-}
 
 export const Loading: React.FC<ILoadingProps> = ({
   isLoading,

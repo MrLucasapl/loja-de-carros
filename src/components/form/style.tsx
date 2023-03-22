@@ -2,9 +2,34 @@ import styled from "styled-components";
 
 export const FildformStyled = styled.div`
   width: 300px;
+  height: 100%;
   display: flex;
-  height: inherit;
+  overflow: auto;
   background-color: rgb(10, 39, 65);
+
+  p {
+    width: 10%;
+    background-color: #e9ecef;
+  }
+
+  .show{
+    display: none;
+  }
+
+  form {
+    height: 130vh;
+    padding: 0% 5%;
+    display: flex;
+    min-width: 300px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  &::-webkit-scrollbar,
+  form::-webkit-scrollbar {
+    width: 0px;
+  }
 
   .search-total {
     padding: 15px;
@@ -57,16 +82,6 @@ export const FildformStyled = styled.div`
     outline: none;
   }
 
-  form {
-    height: 75%;
-    padding: 5%;
-    display: flex;
-    min-width: 300px;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
   .box-year-select,
   .box-price,
   .box-km {
@@ -107,5 +122,32 @@ export const FildformStyled = styled.div`
         cursor: pointer;
       }
     }
+  }
+
+  .box-orderBy-asc {
+    width: 100%;
+    display: flex;
+    color: #e9ecef;
+    justify-content: space-between;
+
+    label[for="asc"],
+    label[for="des"] {
+      width: 60%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      .asc,
+      .des {
+        width: 20px;
+      }
+    }
+    label[for="orderBy"] {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 584px) {
+    
   }
 `;
