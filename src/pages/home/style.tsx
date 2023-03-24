@@ -16,6 +16,10 @@ export const HomeStyled = styled.div`
       "card6 card7 card8 card9 card10 card11";
   }
 
+  .box-cards {
+    height: 92%;
+  }
+
   select::-webkit-scrollbar,
   .box-cards::-webkit-scrollbar {
     width: 0px;
