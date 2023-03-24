@@ -1,22 +1,19 @@
 import styled from "styled-components";
 
 export const CardCarStyled = styled.section`
-  display: flex;
+  grid-area: ${({ area }: { area: string }) => "card" + area};
   margin: 10px;
-  align-items: center;
-  justify-content: center;
+  width: 286px;
+  height: 500px;
 
   .container:hover {
-    width: 229px;
     background-color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.256);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.256);
   }
 
   .container {
-    width: 215px;
     display: flex;
-    padding: 10px;
-    height: 410px;
+    padding: 15px;
     cursor: pointer;
     overflow: hidden;
     flex-direction: column;

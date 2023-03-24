@@ -18,7 +18,7 @@ export const filterCar = (
   const normalizedkmMax = accentRemover(filters.kmMax.toLowerCase());
   const normalizedFuel = accentRemover(filters.fuel.toLowerCase());
   const normalizedOrderBy = accentRemover(filters.orderBy.toLowerCase());
-  
+
   const hasFilters =
     filters.search !== "" ||
     filters.filter !== "" ||
@@ -139,9 +139,7 @@ export const filterCar = (
       default:
         break;
     }
-  }
-
-  if (filters.des) {
+  } else {
     switch (normalizedOrderBy) {
       case "ano":
         setCopyData(filteredData.sort((a, b) => b.ano - a.ano));

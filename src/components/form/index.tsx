@@ -16,7 +16,6 @@ const inputField: TFormData[] = [
     fuel: "",
     orderBy: "",
     asc: false,
-    des: false,
     newCar: false,
     usedCar: false,
   },
@@ -24,18 +23,19 @@ const inputField: TFormData[] = [
 
 const Fildform = ({
   brands,
-  years,
+  yearMax,
+  yearMin,
   fuel,
   data,
   copyData,
   selectedCars,
   setCopyData,
+  setYearMax,
   contSelected,
 }: IFildform) => {
   const [isActiveNewCar, setIsActiveNewCar] = React.useState<boolean>(false);
   const [isActiveUsedCar, setIsActiveUsedCar] = React.useState<boolean>(false);
   const [isActiveAsc, setIsActiveAsc] = React.useState<boolean>(false);
-  const [isActiveDes, setIsActiveDes] = React.useState<boolean>(false);
   const [formSave, setformSave] = React.useState(
     inputField.reduce(
       (acc, field) => {
@@ -53,12 +53,30 @@ const Fildform = ({
         fuel: "",
         orderBy: "",
         asc: false,
-        des: false,
         newCar: false,
         usedCar: false,
       }
     )
   );
+
+  React.useEffect(() => {
+    const currentYear = new Date().getFullYear();
+
+    const years = [];
+    for (let i = Number(formSave.yearMin); i <= currentYear; i++) {
+      years.push(i);
+    }
+
+    const yearsOptions: JSX.Element[] = [];
+    for (const year in years) {
+      yearsOptions.push(
+        <option key={years[year]} value={years[year]}>
+          {years[year]}
+        </option>
+      );
+    }
+    setYearMax(yearsOptions);
+  }, [formSave.yearMin]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -114,18 +132,26 @@ const Fildform = ({
       return idCounts[car.id] % 2 !== 0;
     });
 
-    const totalYears = filteredCars.reduce((sum, car) =>  sum + car.ano, 0 );
+    const totalYears = filteredCars.reduce((sum, car) => sum + car.ano, 0);
     const averageYears = totalYears / filteredCars.length;
 
-    alert(`A media dos anos dos carros selecionados é ${averageYears.toFixed(0)}`)
+    alert(
+      `A media dos anos dos carros selecionados é ${averageYears.toFixed(0)}`
+    );
   };
 
   const calculateStandardDeviation = () => {
-    const media = copyData.reduce((total, valor) => total + valor.km, 0) / copyData.length;
-    const somaQuadradosDiferencas = copyData.reduce((total, valor) => total + Math.pow(valor.km - media, 2), 0);
-    const desvioPadrao = Math.sqrt(somaQuadradosDiferencas / (copyData.length - 1));
+    const media =
+      copyData.reduce((total, valor) => total + valor.km, 0) / copyData.length;
+    const somaQuadradosDiferencas = copyData.reduce(
+      (total, valor) => total + Math.pow(valor.km - media, 2),
+      0
+    );
+    const desvioPadrao = Math.sqrt(
+      somaQuadradosDiferencas / (copyData.length - 1)
+    );
 
-    alert(`O desvio padrão dos quilômetros é: ${desvioPadrao.toFixed(0)}`)
+    alert(`O desvio padrão dos quilômetros é: ${desvioPadrao.toFixed(0)}`);
   };
 
   return (
@@ -167,7 +193,7 @@ const Fildform = ({
             }
           >
             <option value="">Ano Min</option>
-            {years}
+            {yearMin}
           </select>
 
           <select
@@ -178,7 +204,7 @@ const Fildform = ({
             }
           >
             <option value="">Ano Max</option>
-            {years}
+            {yearMax}
           </select>
         </div>
 
@@ -189,9 +215,9 @@ const Fildform = ({
               name="priceMin"
               id="priceMin"
               placeholder="Valor Min."
-              onChange={({ target }) =>
-                handleChange({ name: target.name, value: target.value })
-              }
+              onChange={({ target }) => {
+                handleChange({ name: target.name, value: target.value });
+              }}
               autoComplete="off"
             />
           </label>
@@ -310,27 +336,15 @@ const Fildform = ({
               }}
             />
           </label>
-
-          <label htmlFor="des">
-            Decrecente:
-            <input
-              type="checkbox"
-              className="des"
-              id="des"
-              checked={isActiveDes}
-              onChange={({ target }) => {
-                handleChange({ name: "des", value: target.checked });
-                setIsActiveDes(!isActiveDes);
-              }}
-            />
-          </label>
         </div>
 
+        <button type="submit">Buscar</button>
         <button onClick={calculateAverage}>Calcular Media</button>
         <button onClick={calculateMoreYears}>Ano Com Mais Carros </button>
         <button onClick={calculateAverageYears}>Media Dos Anos </button>
-        <button onClick={calculateStandardDeviation}>Desvio Padrão dos km </button>
-        <button type="submit">Buscar</button>
+        <button onClick={calculateStandardDeviation}>
+          Desvio Padrão dos km{" "}
+        </button>
       </form>
     </FildformStyled>
   );

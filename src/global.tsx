@@ -23,7 +23,6 @@ export type TFormData = {
   fuel: string;
   orderBy: string;
   asc: boolean;
-  des: boolean;
   newCar: boolean;
   usedCar: boolean;
 };
@@ -45,7 +44,6 @@ export interface OutletContextType {
 }
 
 export interface Irender {
-  isLoading: boolean;
   copyData: any;
   setSelectedCars: React.Dispatch<React.SetStateAction<Icar[]>>;
   setContSelected: React.Dispatch<React.SetStateAction<number>>;
@@ -59,12 +57,14 @@ export interface CardCarProps {
 
 export interface IFildform {
   brands: JSX.Element[];
-  years: JSX.Element[];
+  yearMin: JSX.Element[];
+  yearMax: JSX.Element[];
   fuel: JSX.Element[];
   selectedCars: Icar[];
   copyData: Icar[];
   data: Icar[];
   contSelected: number;
+  setYearMax: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
   setCopyData: React.Dispatch<React.SetStateAction<Icar[]>>;
 }
 

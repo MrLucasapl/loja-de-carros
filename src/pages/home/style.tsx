@@ -6,14 +6,14 @@ export const HomeStyled = styled.div`
   display: flex;
 
   .box-cards {
-    gap: 0.8%;
     width: 100%;
-    height: 100%;
     display: grid;
-    margin: 0px auto;
     overflow: auto;
-    max-width: 1500px;
-    grid-template-columns: repeat(auto-fit, minmax(231px, 1fr));
+    align-items: center;
+    justify-content: center;
+    grid-template-areas:
+        "card0 card1 card2 card3 card4 card5"
+        "card6 card7 card8 card9 card10 card11";
   }
 
   select::-webkit-scrollbar,
@@ -28,5 +28,48 @@ export const HomeStyled = styled.div`
     font-size: 2rem;
     align-items: center;
     justify-content: center;
+  }
+
+  @media (max-width: 2173px) {
+    .box-cards {
+      grid-template-areas:
+      "card0 card1 card2 card3" 
+      "card4 card5 card6 card7"
+      "card8 card9 card10 card11";
+    }
+  }
+
+  @media (max-width: 1538px) {
+    .box-cards {
+      grid-template-areas:
+      "card0 card1 card2"
+      "card3 card4 card5" 
+      "card6 card7 card8" 
+      "card9 card10 card11";
+    }
+  }
+
+  @media (max-width: 1213px) {
+    .box-cards {
+      grid-template-areas:
+      "card0 card1" 
+      "card2 card3"
+      "card4 card5"
+      "card6 card7" 
+      "card8 card9" 
+      "card10 card11";
+    }
+  }
+
+  @media (max-width: 930px) {
+    .box-cards {
+      grid-template-areas:
+      "card0" "card1" 
+      "card2" "card3"
+      "card4" "card5"
+      "card6" "card7" 
+      "card8" "card9" 
+      "card10" "card11";
+    }
   }
 `;

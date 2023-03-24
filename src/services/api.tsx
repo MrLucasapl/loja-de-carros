@@ -8,5 +8,5 @@ const Api = axios.create({
 
 export const getAllCar = async () => {
   const response = await Api.get("/data");
-  return Promise.resolve(response.data);
+  return response.data;
 };
