@@ -44,15 +44,15 @@ export interface OutletContextType {
 }
 
 export interface Irender {
-  copyData: any;
+  copyData: Icar[];
+  selectedCars: Icar[];
   setSelectedCars: React.Dispatch<React.SetStateAction<Icar[]>>;
-  setContSelected: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface CardCarProps {
   values: Icar[];
+  selectedCars: Icar[];
   setSelectedCars: React.Dispatch<React.SetStateAction<Icar[]>>;
-  setContSelected: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface IFildform {
@@ -63,18 +63,8 @@ export interface IFildform {
   selectedCars: Icar[];
   copyData: Icar[];
   data: Icar[];
-  contSelected: number;
   setYearMax: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
   setCopyData: React.Dispatch<React.SetStateAction<Icar[]>>;
-}
-
-export interface ILoadingProps {
-  isLoading: boolean;
-}
-
-export interface ILoadingContext {
-  isLoading: boolean;
-  setLoading: (loading: boolean) => void;
 }
 
 export interface Ibanner {

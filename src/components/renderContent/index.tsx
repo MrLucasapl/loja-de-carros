@@ -4,7 +4,7 @@ import CardCar from "../cardCar";
 
 const RenderContext = ({
   copyData,
-  setContSelected,
+  selectedCars,
   setSelectedCars,
 }: Irender) => {
   const closingTime = new Date();
@@ -15,7 +15,7 @@ const RenderContext = ({
       <div className="box-cards">
         <CardCar
           values={copyData}
-          setContSelected={setContSelected}
+          selectedCars={selectedCars}
           setSelectedCars={setSelectedCars}
         />
         <Banner closingTime={closingTime} copyData={copyData} />

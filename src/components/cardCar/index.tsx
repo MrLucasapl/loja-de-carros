@@ -5,36 +5,55 @@ import { CardCarStyled } from "./style";
 
 const CardCar: React.FC<CardCarProps> = ({
   values,
-  setContSelected,
   setSelectedCars,
+  selectedCars,
 }) => {
-  let selectedCount = 0;
+  const [selectedCount, setSelectedCount] = React.useState(0);
 
   const toggleSelected = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const target = event.target as HTMLElement;
     const card = target.closest(".container");
     if (card) {
       card.classList.toggle("selected");
-      selectedCount += card.classList.contains("selected") ? 1 : -1;
+      setSelectedCount(
+        selectedCount + (card.classList.contains("selected") ? 1 : -1)
+      );
       const car = values.find((car) => car.id === Number(card.id));
       if (car) {
-        setSelectedCars((selectedCars) => [...selectedCars, car]);
+        setSelectedCars((selectedCars) => {
+          const index = selectedCars.findIndex(
+            (selectedCar) => selectedCar.id === car.id
+          );
+          if (index >= 0) {
+            return [
+              ...selectedCars.slice(0, index),
+              ...selectedCars.slice(index + 1),
+            ];
+          } else {
+            return [...selectedCars, car];
+          }
+        });
       }
     }
-    setContSelected(selectedCount);
   };
 
   const carItems = React.useMemo(
     () =>
       values.map((car, index) => {
-        console.log(index);
+        const selected = selectedCars.some(
+          (selectedCar) => selectedCar.id === car.id
+        );
         return (
           <CardCarStyled
             key={car.id}
             area={String(index)}
-            onClick={toggleSelected}
+            onClick={(event) => toggleSelected(event)}
+            className={selected ? "selected" : ""}
           >
-            <div id={String(car.id)} className="container">
+            <div
+              id={String(car.id)}
+              className={selected ? "selected container" : "container"}
+            >
               <img
                 className="img"
                 src={car.imagem}
@@ -61,7 +80,7 @@ const CardCar: React.FC<CardCarProps> = ({
           </CardCarStyled>
         );
       }),
-    [values]
+    [values, selectedCars]
   );
 
   return <>{carItems}</>;

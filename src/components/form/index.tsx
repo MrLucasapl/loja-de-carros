@@ -31,7 +31,6 @@ const Fildform = ({
   selectedCars,
   setCopyData,
   setYearMax,
-  contSelected,
 }: IFildform) => {
   const [isActiveNewCar, setIsActiveNewCar] = React.useState<boolean>(false);
   const [isActiveUsedCar, setIsActiveUsedCar] = React.useState<boolean>(false);
@@ -158,7 +157,7 @@ const Fildform = ({
     <FildformStyled>
       <form onSubmit={handleSubmit}>
         <div className="search-total">
-          {contSelected == 0 ? copyData.length : contSelected}
+          {selectedCars.length == 0 ? copyData.length : selectedCars.length}
         </div>
         <label htmlFor="search" className="box-input-search">
           <input

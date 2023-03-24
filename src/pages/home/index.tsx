@@ -10,7 +10,6 @@ const Home = ({ copyData, data, setCopyData }: OutletContextType) => {
   const [yearMin, setYearMin] = React.useState<JSX.Element[]>([]);
   const [yearMax, setYearMax] = React.useState<JSX.Element[]>([]);
   const [fuel, setFuel] = React.useState<JSX.Element[]>([]);
-  const [contSelected, setContSelected] = React.useState<number>(0);
   const [selectedCars, setSelectedCars] = React.useState<Icar[]>([]);
 
   React.useEffect(() => {
@@ -56,15 +55,14 @@ const Home = ({ copyData, data, setCopyData }: OutletContextType) => {
             copyData={copyData}
             setCopyData={setCopyData}
             setYearMax={setYearMax}
-            contSelected={contSelected}
             selectedCars={selectedCars}
           />
         </div>
       }
       <RenderContext
         setSelectedCars={setSelectedCars}
+        selectedCars={selectedCars}
         copyData={copyData}
-        setContSelected={setContSelected}
       />
     </HomeStyled>
   );
