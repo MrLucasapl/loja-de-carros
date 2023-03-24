@@ -2,9 +2,8 @@ import styled from "styled-components";
 
 export const FildformStyled = styled.div`
   width: 300px;
-  height: 88%;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  height: 100vh;
+  padding-bottom: 80px;
   display: ${({display}:{display: any}) => display};
   overflow: auto;
   background-color: #0a2741;
@@ -19,7 +18,7 @@ export const FildformStyled = styled.div`
   }
 
   form {
-    height: 130vh;
+    height: 160%;
     padding: 0% 5%;
     display: flex;
     min-width: 300px;
