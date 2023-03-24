@@ -28,6 +28,7 @@ const Fildform = ({
   fuel,
   data,
   copyData,
+  display,
   selectedCars,
   setCopyData,
   setYearMax,
@@ -154,7 +155,7 @@ const Fildform = ({
   };
 
   return (
-    <FildformStyled>
+    <FildformStyled display={display? "flex": "none"}>
       <form onSubmit={handleSubmit}>
         <div className="search-total">
           {selectedCars.length == 0 ? copyData.length : selectedCars.length}

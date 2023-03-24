@@ -4,6 +4,7 @@ import { Icar, OutletContextType } from "../../global";
 import { getOptions } from "../../util/getOptionElementsWithCount";
 import { HomeStyled } from "./style";
 import RenderContext from "../../components/renderContent";
+import { useOutletContext } from "react-router-dom";
 
 const Home = ({ copyData, data, setCopyData }: OutletContextType) => {
   const [brands, setBrands] = React.useState<JSX.Element[]>([]);
@@ -11,6 +12,8 @@ const Home = ({ copyData, data, setCopyData }: OutletContextType) => {
   const [yearMax, setYearMax] = React.useState<JSX.Element[]>([]);
   const [fuel, setFuel] = React.useState<JSX.Element[]>([]);
   const [selectedCars, setSelectedCars] = React.useState<Icar[]>([]);
+
+  const [isActive] = useOutletContext<any>();
 
   React.useEffect(() => {
     setFuel(getOptions(data, "combustivel"));
@@ -47,6 +50,7 @@ const Home = ({ copyData, data, setCopyData }: OutletContextType) => {
       {
         <div className="box-forms">
           <Fildform
+            display={isActive}
             data={data}
             fuel={fuel}
             yearMin={yearMin}

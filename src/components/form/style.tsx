@@ -3,9 +3,9 @@ import styled from "styled-components";
 export const FildformStyled = styled.div`
   width: 300px;
   height: 100%;
-  display: flex;
+  display: ${({display}:{display: any}) => display};
   overflow: auto;
-  background-color: rgb(10, 39, 65);
+  background-color: #0a2741;
 
   p {
     width: 10%;

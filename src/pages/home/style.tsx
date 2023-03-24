@@ -12,8 +12,8 @@ export const HomeStyled = styled.div`
     align-items: center;
     justify-content: center;
     grid-template-areas:
-        "card0 card1 card2 card3 card4 card5"
-        "card6 card7 card8 card9 card10 card11";
+      "card0 card1 card2 card3 card4 card5"
+      "card6 card7 card8 card9 card10 card11";
   }
 
   select::-webkit-scrollbar,
@@ -33,43 +33,43 @@ export const HomeStyled = styled.div`
   @media (max-width: 2173px) {
     .box-cards {
       grid-template-areas:
-      "card0 card1 card2 card3" 
-      "card4 card5 card6 card7"
-      "card8 card9 card10 card11";
+        "card0 card1 card2 card3"
+        "card4 card5 card6 card7"
+        "card8 card9 card10 card11";
     }
   }
 
   @media (max-width: 1538px) {
     .box-cards {
       grid-template-areas:
-      "card0 card1 card2"
-      "card3 card4 card5" 
-      "card6 card7 card8" 
-      "card9 card10 card11";
+        "card0 card1 card2"
+        "card3 card4 card5"
+        "card6 card7 card8"
+        "card9 card10 card11";
     }
   }
 
   @media (max-width: 1213px) {
     .box-cards {
       grid-template-areas:
-      "card0 card1" 
-      "card2 card3"
-      "card4 card5"
-      "card6 card7" 
-      "card8 card9" 
-      "card10 card11";
+        "card0 card1"
+        "card2 card3"
+        "card4 card5"
+        "card6 card7"
+        "card8 card9"
+        "card10 card11";
     }
   }
 
   @media (max-width: 930px) {
     .box-cards {
       grid-template-areas:
-      "card0" "card1" 
-      "card2" "card3"
-      "card4" "card5"
-      "card6" "card7" 
-      "card8" "card9" 
-      "card10" "card11";
+        "card0" "card1"
+        "card2" "card3"
+        "card4" "card5"
+        "card6" "card7"
+        "card8" "card9"
+        "card10" "card11";
     }
   }
 `;

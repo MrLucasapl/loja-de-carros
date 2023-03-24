@@ -63,6 +63,7 @@ export interface IFildform {
   selectedCars: Icar[];
   copyData: Icar[];
   data: Icar[];
+  display: any;
   setYearMax: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
   setCopyData: React.Dispatch<React.SetStateAction<Icar[]>>;
 }
