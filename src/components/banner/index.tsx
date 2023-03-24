@@ -9,7 +9,9 @@ const Banner = ({ closingTime, copyData }: Ibanner) => {
     const closingTimeMs = closingTime.getTime();
     return closingTimeMs - now;
   });
-  const intervalRef = React.useRef<number>(remainingTime);
+
+  const intervalRef = React.useRef<number>();
+  intervalRef.current = remainingTime;
 
   React.useEffect(() => {
     intervalRef.current = setInterval(() => {
@@ -28,39 +30,29 @@ const Banner = ({ closingTime, copyData }: Ibanner) => {
   };
 
   const countdown = () => {
-    if (remainingTime < 0) {
-      setClosed(true);
-      clearInterval(intervalRef.current);
-    } else {
-      setRemainingTime((prevRemainingTime) => prevRemainingTime - 1000);
-    }
+    remainingTime < 0 && setClosed(true);
+    setRemainingTime((prevRemainingTime) => prevRemainingTime - 1000);
   };
-
-  if (closed) {
-    return null;
-  }
 
   const carroMenorPreco = copyData.reduce((carro1, carro2) =>
     carro1.preco < carro2.preco ? carro1 : carro2
   );
 
+  const priceFormatter = new Intl.NumberFormat("pt-br", {
+    style: "currency",
+    currency: "BRL",
+  });
+
+  const precoOriginalFormatado = priceFormatter.format(carroMenorPreco.preco);
+
   const precoComDesconto = carroMenorPreco.preco * 0.75;
-
-  const precoOriginalFormatado = carroMenorPreco.preco.toLocaleString("pt-br", {
-    style: "currency",
-    currency: "BRL",
-  });
-
-  const precoComDescontoFormatado = precoComDesconto.toLocaleString("pt-br", {
-    style: "currency",
-    currency: "BRL",
-  });
+  const precoComDescontoFormatado = priceFormatter.format(precoComDesconto);
 
   const seconds = Math.floor((remainingTime / 1000) % 60);
   const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
   const hours = Math.floor((remainingTime / 1000 / 60 / 60) % 24);
 
-  return (
+  return closed ? null : (
     <BannerStyled>
       <div className="banner-content">
         <div>
